@@ -19,21 +19,23 @@
     [super viewDidLoad];
     _process = [[LDCProcessModel alloc] init];
     _process.instructList = [[NSMutableArray alloc] initWithObjects:nil];
-    _process.info = [[NSMutableArray alloc] initWithObjects:nil];
+    _process.resultDataSource = [[NSMutableArray alloc] initWithObjects:nil];
     _process.memoryList = [[NSMutableArray alloc] initWithObjects:nil];
     
     _process.lackCount = 0;
     _process.runningTime = 0.1f;
     _process.oldestPage = 0;
-    _process.numOfCode = 320;
+    _process.totalNumOfInstruct = 320;
     
-    dispatch_sync(dispatch_get_global_queue(0, 0), ^{
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
         [self createInstructList];
         dispatch_async(dispatch_get_main_queue(), ^{
-            _process.runTimer = [NSTimer scheduledTimerWithTimeInterval:_process.runningTime target:self selector:@selector(generateInstruct) userInfo:nil repeats:YES];
+            _process.runTimer = [NSTimer scheduledTimerWithTimeInterval:_process.runningTime target:self selector:@selector(showInstruct) userInfo:nil repeats:YES];
         });
     });
 }
+
+#pragma mark - create instruct list
 
 - (void)createInstructList
 {
@@ -42,7 +44,7 @@
     BOOL isEqualOrNot;
     
     do{
-        tempNumber = (arc4random() % (_process.numOfCode));
+        tempNumber = (arc4random() % (_process.totalNumOfInstruct));
         tempString = [NSString stringWithFormat:@"%i", tempNumber];
         isEqualOrNot = YES;
         
@@ -58,10 +60,12 @@
         {
             [_process.instructList addObject:tempString];
         }
-    } while ([_process.instructList count] < _process.numOfCode);
+    } while ([_process.instructList count] < _process.totalNumOfInstruct);
 }
 
-- (void)generateInstruct
+#pragma mark - call instruct & show current instuct info & add result(log) data source
+
+- (void)showInstruct
 {
     if([_process.instructList count] > 0)
     {
@@ -69,14 +73,14 @@
         _process.pageNumber = _process.instructNumber/10;
         _process.pageString = [NSString stringWithFormat:@"%i", _process.pageNumber];
         _instructLabel.text = [NSString stringWithFormat:@"第%i页,第%i条指令", _process.pageNumber,_process.instructNumber];
-        [_process.info addObject:[NSString stringWithFormat:@"第%i页,第%i条指令", _process.pageNumber,_process.instructNumber]];
+        [_process.resultDataSource addObject:[NSString stringWithFormat:@"第%i页,第%i条指令", _process.pageNumber,_process.instructNumber]];
         [self loadToMemory];
         [_process.instructList removeObjectAtIndex:0];
     }
     else
     {
         _instructLabel.text = @"本次运行结束";
-        _lackPageLabel.text = [NSString stringWithFormat:@"缺页率:%i/%i",_process.lackCount,_process.numOfCode];
+        _lackPageLabel.text = [NSString stringWithFormat:@"缺页率:%i/%i",_process.lackCount,_process.totalNumOfInstruct];
         _result = [[UITableView alloc] initWithFrame:CGRectMake(20, 377, 429, 348) style:UITableViewStylePlain];
         _result.delegate = self;
         _result.dataSource = self;
@@ -86,13 +90,15 @@
     }
 }
 
+#pragma mark - load instruct to memory & swap pages when page-lacking
+
 - (void)loadToMemory
 {
     if ([_process.memoryList count] == 0)
     {
         [_process.memoryList addObject:[NSString stringWithFormat:@"%i", _process.pageNumber]];
-        NSString *tempStringOne = [_process.info objectAtIndex:[_process.info count] - 1];
-        [_process.info replaceObjectAtIndex:[_process.info count] - 1 withObject:[tempStringOne stringByAppendingString:@"   缺页"]];
+        NSString *tempStringOne = [_process.resultDataSource objectAtIndex:[_process.resultDataSource count] - 1];
+        [_process.resultDataSource replaceObjectAtIndex:[_process.resultDataSource count] - 1 withObject:[tempStringOne stringByAppendingString:@"   缺页"]];
     }
     if ([_process.memoryList count] < 4 && [_process.memoryList count] > 0)
     {
@@ -107,8 +113,8 @@
         if (add == YES)
         {
             [_process.memoryList addObject:[NSString stringWithFormat:@"%i", _process.pageNumber]];
-            NSString *tempStringTwo = [_process.info objectAtIndex:[_process.info count] - 1];
-            [_process.info replaceObjectAtIndex:[_process.info count] - 1 withObject:[tempStringTwo stringByAppendingString:@"   缺页"]];
+            NSString *tempStringTwo = [_process.resultDataSource objectAtIndex:[_process.resultDataSource count] - 1];
+            [_process.resultDataSource replaceObjectAtIndex:[_process.resultDataSource count] - 1 withObject:[tempStringTwo stringByAppendingString:@"   缺页"]];
         }
     }
     if ([_process.memoryList count] == 4)
@@ -128,8 +134,8 @@
             {
                 _process.oldestPage++;
             }
-            NSString *tempStringThree = [_process.info objectAtIndex:[_process.info count] - 1];
-            [_process.info replaceObjectAtIndex:[_process.info count] - 1 withObject:[tempStringThree stringByAppendingString:@"   缺页"]];
+            NSString *tempStringThree = [_process.resultDataSource objectAtIndex:[_process.resultDataSource count] - 1];
+            [_process.resultDataSource replaceObjectAtIndex:[_process.resultDataSource count] - 1 withObject:[tempStringThree stringByAppendingString:@"   缺页"]];
             _process.lackCount++;
         }
     }
@@ -139,16 +145,112 @@
     }
     if ([_process.memoryList count] >= 2)
     {
-        _memoryLabelOne.text = [_process.memoryList objectAtIndex:1];
+        _memoryLabelTwo.text = [_process.memoryList objectAtIndex:1];
     }
     if ([_process.memoryList count] >= 3)
     {
-        _memoryLabelOne.text = [_process.memoryList objectAtIndex:2];
+        _memoryLabelThree.text = [_process.memoryList objectAtIndex:2];
     }
     if ([_process.memoryList count] >= 4)
     {
-        _memoryLabelOne.text = [_process.memoryList objectAtIndex:3];
+        _memoryLabelFour.text = [_process.memoryList objectAtIndex:3];
     }
+}
+
+#pragma mark - UI Logic implementations
+
+- (IBAction)restart:(id)sender
+{
+    [_process.instructList removeAllObjects];
+    [_process.memoryList removeAllObjects];
+    [_process.resultDataSource removeAllObjects];
+    _memoryLabelOne.text = @"NULL";
+    _memoryLabelTwo.text = @"NULL";
+    _memoryLabelThree.text = @"NULL";
+    _memoryLabelFour.text = @"NULL";
+    _process.oldestPage = 0;
+    _process.lackCount = 0;
+    _lackPageLabel.text = @"缺页率: ";
+    [_result removeFromSuperview];
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [self createInstructList];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_process.runTimer invalidate];
+            _process.runTimer = [NSTimer scheduledTimerWithTimeInterval:_process.runningTime target:self selector:@selector(showInstruct) userInfo:nil repeats:YES];
+        });
+    });
+}
+
+- (IBAction)changeTime:(id)sender
+{
+    UIButton *btn = (UIButton*)sender;
+    switch (btn.tag)
+    {
+        case 1:
+            _process.runningTime = 0.1f;
+            break;
+        case 2:
+            _process.runningTime = 0.5f;
+            break;
+        case 3:
+            _process.runningTime = 1.0f;
+            break;
+        default:
+            break;
+    }
+    _runningTimeLabel.text = [NSString stringWithFormat:@"每条指令执行时间：%0.1fs", _process.runningTime];
+}
+
+- (IBAction)changeNum:(id)sender
+{
+    UIButton *btn = (UIButton*)sender;
+    switch (btn.tag)
+    {
+        case 4:
+            _process.totalNumOfInstruct = 240;
+            break;
+        case 5:
+            _process.totalNumOfInstruct = 320;
+            break;
+        case 6:
+            _process.totalNumOfInstruct = 480;
+            break;
+        default:
+            break;
+    }
+    _numOfInstructLabel.text = [NSString stringWithFormat:@"指令总数: %i条", _process.totalNumOfInstruct];
+}
+
+#pragma mark - Table View DataSource & Delegate
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _process.totalNumOfInstruct;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 30;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"ResultCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    NSString *text;
+    text = [[NSString stringWithFormat:@"%i",indexPath.row+1] stringByAppendingString:[_process.resultDataSource objectAtIndex:indexPath.row]];
+    cell.textLabel.text = text;
+    return cell;
 }
 
 - (void)didReceiveMemoryWarning

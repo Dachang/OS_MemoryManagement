@@ -13,7 +13,7 @@
 @property (strong, nonatomic) NSMutableArray *instructList;    //指令列表
 @property (nonatomic) int countNum;
 
-@property (strong, nonatomic) NSMutableArray *info;
+@property (strong, nonatomic) NSMutableArray *resultDataSource;      //输出结果信息保存
 @property (strong, nonatomic) NSMutableArray *memoryList;  //内存块表
 
 @property (strong, nonatomic) NSTimer *runTimer;    //运行时钟
@@ -26,6 +26,6 @@
 @property (nonatomic) double runningTime;    //运行时
 @property (nonatomic) int lackCount;       //缺页数
 @property (nonatomic) int oldestPage;     //最早到达的页
-@property (nonatomic) int numOfCode;     //总页数
+@property (nonatomic) int totalNumOfInstruct;     //总页数
 
 @end

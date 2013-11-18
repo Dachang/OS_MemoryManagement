@@ -70,7 +70,7 @@
         _process.pageString = [NSString stringWithFormat:@"%i", _process.pageNumber];
         _instructLabel.text = [NSString stringWithFormat:@"第%i页,第%i条指令", _process.pageNumber,_process.instructNumber];
         [_process.info addObject:[NSString stringWithFormat:@"第%i页,第%i条指令", _process.pageNumber,_process.instructNumber]];
-        //[self loadToMemory];
+        [self loadToMemory];
         [_process.instructList removeObjectAtIndex:0];
     }
     else
@@ -91,7 +91,63 @@
     if ([_process.memoryList count] == 0)
     {
         [_process.memoryList addObject:[NSString stringWithFormat:@"%i", _process.pageNumber]];
-        NSString *tempString = [_process.info objectAtIndex:[_process.info count] - 1];
+        NSString *tempStringOne = [_process.info objectAtIndex:[_process.info count] - 1];
+        [_process.info replaceObjectAtIndex:[_process.info count] - 1 withObject:[tempStringOne stringByAppendingString:@"   缺页"]];
+    }
+    if ([_process.memoryList count] < 4 && [_process.memoryList count] > 0)
+    {
+        BOOL add = YES;
+        for (int i = 0; i < [_process.memoryList count]; i++)
+        {
+            if (_process.pageNumber == [[_process.memoryList objectAtIndex:i] intValue])
+            {
+                add = NO;
+            }
+        }
+        if (add == YES)
+        {
+            [_process.memoryList addObject:[NSString stringWithFormat:@"%i", _process.pageNumber]];
+            NSString *tempStringTwo = [_process.info objectAtIndex:[_process.info count] - 1];
+            [_process.info replaceObjectAtIndex:[_process.info count] - 1 withObject:[tempStringTwo stringByAppendingString:@"   缺页"]];
+        }
+    }
+    if ([_process.memoryList count] == 4)
+    {
+        if ([_process.pageString isEqualToString:[_process.memoryList objectAtIndex:0]] || [_process.pageString isEqualToString:[_process.memoryList objectAtIndex:1]] || [_process.pageString isEqualToString:[_process.memoryList objectAtIndex:2]] || [_process.pageString isEqualToString:[_process.memoryList objectAtIndex:3]])
+        {
+            //没有缺页
+        }
+        else
+        {
+            [_process.memoryList replaceObjectAtIndex:_process.oldestPage withObject:_process.pageString];
+            if (_process.oldestPage == 3)
+            {
+                _process.oldestPage = 0;
+            }
+            else if (_process.oldestPage < 3)
+            {
+                _process.oldestPage++;
+            }
+            NSString *tempStringThree = [_process.info objectAtIndex:[_process.info count] - 1];
+            [_process.info replaceObjectAtIndex:[_process.info count] - 1 withObject:[tempStringThree stringByAppendingString:@"   缺页"]];
+            _process.lackCount++;
+        }
+    }
+    if ([_process.memoryList count] >= 1)
+    {
+        _memoryLabelOne.text = [_process.memoryList objectAtIndex:0];
+    }
+    if ([_process.memoryList count] >= 2)
+    {
+        _memoryLabelOne.text = [_process.memoryList objectAtIndex:1];
+    }
+    if ([_process.memoryList count] >= 3)
+    {
+        _memoryLabelOne.text = [_process.memoryList objectAtIndex:2];
+    }
+    if ([_process.memoryList count] >= 4)
+    {
+        _memoryLabelOne.text = [_process.memoryList objectAtIndex:3];
     }
 }
 

@@ -21,6 +21,7 @@
 		13367D94183A389900E466AE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13367D76183A389900E466AE /* UIKit.framework */; };
 		13367D9C183A389900E466AE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 13367D9A183A389900E466AE /* InfoPlist.strings */; };
 		13367D9E183A389900E466AE /* OSMemoryManagementTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 13367D9D183A389900E466AE /* OSMemoryManagementTests.m */; };
+		13367DA9183A3D6D00E466AE /* LDCProcessModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 13367DA8183A3D6D00E466AE /* LDCProcessModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		13367D99183A389900E466AE /* OSMemoryManagementTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OSMemoryManagementTests-Info.plist"; sourceTree = "<group>"; };
 		13367D9B183A389900E466AE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		13367D9D183A389900E466AE /* OSMemoryManagementTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OSMemoryManagementTests.m; sourceTree = "<group>"; };
+		13367DA7183A3D6D00E466AE /* LDCProcessModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDCProcessModel.h; sourceTree = "<group>"; };
+		13367DA8183A3D6D00E466AE /* LDCProcessModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDCProcessModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +115,8 @@
 		13367D78183A389900E466AE /* OSMemoryManagement */ = {
 			isa = PBXGroup;
 			children = (
+				13367DA7183A3D6D00E466AE /* LDCProcessModel.h */,
+				13367DA8183A3D6D00E466AE /* LDCProcessModel.m */,
 				13367D81183A389900E466AE /* LDCAppDelegate.h */,
 				13367D82183A389900E466AE /* LDCAppDelegate.m */,
 				13367D84183A389900E466AE /* Main.storyboard */,
@@ -250,6 +255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13367DA9183A3D6D00E466AE /* LDCProcessModel.m in Sources */,
 				13367D83183A389900E466AE /* LDCAppDelegate.m in Sources */,
 				13367D89183A389900E466AE /* LDCViewController.m in Sources */,
 				13367D7F183A389900E466AE /* main.m in Sources */,

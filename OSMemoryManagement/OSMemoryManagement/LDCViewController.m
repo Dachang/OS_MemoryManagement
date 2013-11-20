@@ -105,27 +105,36 @@
     {
         [_process.memoryList addObject:[NSString stringWithFormat:@"%i", _process.pageNumber]];
         _memoryPageAgeCount[0] = 0;
-        _memoryPageAgeCount[0]++;
         NSString *tempStringOne = [_process.resultDataSource objectAtIndex:[_process.resultDataSource count] - 1];
         [_process.resultDataSource replaceObjectAtIndex:[_process.resultDataSource count] - 1 withObject:[tempStringOne stringByAppendingString:@"   缺页"]];
     }
     if ([_process.memoryList count] < 4 && [_process.memoryList count] > 0)
     {
         BOOL add = YES;
-        int nextNum = 0;
         for (int i = 0; i < [_process.memoryList count]; i++)
         {
             if (_process.pageNumber == [[_process.memoryList objectAtIndex:i] intValue])
             {
-                _memoryPageAgeCount[i]++;
+                _memoryPageAgeCount[i] = 0;
+                for (int j=0; j<i;j++)
+                {
+                    _memoryPageAgeCount[j]++;
+                }
+                for (int k=i+1; k<[_process.memoryList count]; k++)
+                {
+                    _memoryPageAgeCount[k]++;
+                }
                 add = NO;
-                nextNum = i;
             }
         }
         if (add == YES)
         {
             [_process.memoryList addObject:[NSString stringWithFormat:@"%i", _process.pageNumber]];
-            _memoryPageAgeCount[nextNum+1]++;
+            _memoryPageAgeCount[[_process.memoryList count] - 1] = 0;
+            for (int i=0; i<[_process.memoryList count]-1; i++)
+            {
+                _memoryPageAgeCount[i]++;
+            }
             NSString *tempStringTwo = [_process.resultDataSource objectAtIndex:[_process.resultDataSource count] - 1];
             [_process.resultDataSource replaceObjectAtIndex:[_process.resultDataSource count] - 1 withObject:[tempStringTwo stringByAppendingString:@"   缺页"]];
         }
@@ -136,19 +145,31 @@
         {
             if ([_process.pageString isEqualToString:[_process.memoryList objectAtIndex:0]])
             {
-                _memoryPageAgeCount[0]++;
+                _memoryPageAgeCount[0] = 0;
+                _memoryPageAgeCount[1]++;
+                _memoryPageAgeCount[2]++;
+                _memoryPageAgeCount[3]++;
             }
             if ([_process.pageString isEqualToString:[_process.memoryList objectAtIndex:1]])
             {
-                _memoryPageAgeCount[1]++;
+                _memoryPageAgeCount[1] = 0;
+                _memoryPageAgeCount[0]++;
+                _memoryPageAgeCount[2]++;
+                _memoryPageAgeCount[3]++;
             }
             if ([_process.pageString isEqualToString:[_process.memoryList objectAtIndex:2]])
             {
-                _memoryPageAgeCount[2]++;
+                _memoryPageAgeCount[2] = 0;
+                _memoryPageAgeCount[0]++;
+                _memoryPageAgeCount[1]++;
+                _memoryPageAgeCount[3]++;
             }
             if ([_process.pageString isEqualToString:[_process.memoryList objectAtIndex:3]])
             {
-                _memoryPageAgeCount[3]++;
+                _memoryPageAgeCount[3] = 0;
+                _memoryPageAgeCount[0]++;
+                _memoryPageAgeCount[1]++;
+                _memoryPageAgeCount[2]++;
             }
         }
         else
@@ -161,10 +182,19 @@
                 {
                     maxNum = _memoryPageAgeCount[i];
                     maxIndex = i;
+                    NSLog(@"%d",maxIndex);
                 }
             }
             [_process.memoryList replaceObjectAtIndex:maxIndex withObject:_process.pageString];
-            _memoryPageAgeCount[maxIndex] = 1;
+            _memoryPageAgeCount[maxIndex] = 0;
+            for (int j=0; j<maxIndex;j++)
+            {
+                _memoryPageAgeCount[j]++;
+            }
+            for (int k=maxIndex+1; k<[_process.memoryList count]; k++)
+            {
+                _memoryPageAgeCount[k]++;
+            }
 //            if (_process.oldestPage == 3)
 //            {
 //                _process.oldestPage = 0;

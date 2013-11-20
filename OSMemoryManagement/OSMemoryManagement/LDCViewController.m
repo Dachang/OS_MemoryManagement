@@ -47,12 +47,16 @@
 - (void)createInstructList
 {
     int tempNumber;
+    int tempNext;
     NSString *tempString;
+    NSString *tempStringNext;
     BOOL isEqualOrNot;
     
     do{
         tempNumber = (arc4random() % (_process.totalNumOfInstruct));
+        tempNext = tempNumber + 1;
         tempString = [NSString stringWithFormat:@"%i", tempNumber];
+        tempStringNext = [NSString stringWithFormat:@"%i",tempNext];
         isEqualOrNot = YES;
         
         for (_process.countNum = 0; _process.countNum < [_process.instructList count]; _process.countNum++)
@@ -66,6 +70,7 @@
         if (isEqualOrNot == YES)
         {
             [_process.instructList addObject:tempString];
+            [_process.instructList addObject:tempStringNext];
         }
     } while ([_process.instructList count] < _process.totalNumOfInstruct);
 }

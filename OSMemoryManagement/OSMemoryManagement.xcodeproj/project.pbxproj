@@ -117,11 +117,11 @@
 			children = (
 				13367DA7183A3D6D00E466AE /* LDCProcessModel.h */,
 				13367DA8183A3D6D00E466AE /* LDCProcessModel.m */,
+				13367D87183A389900E466AE /* LDCViewController.h */,
+				13367D88183A389900E466AE /* LDCViewController.m */,
 				13367D81183A389900E466AE /* LDCAppDelegate.h */,
 				13367D82183A389900E466AE /* LDCAppDelegate.m */,
 				13367D84183A389900E466AE /* Main.storyboard */,
-				13367D87183A389900E466AE /* LDCViewController.h */,
-				13367D88183A389900E466AE /* LDCViewController.m */,
 				13367D8A183A389900E466AE /* Images.xcassets */,
 				13367D79183A389900E466AE /* Supporting Files */,
 			);
@@ -469,6 +469,7 @@
 				13367DA3183A389900E466AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		13367DA4183A389900E466AE /* Build configuration list for PBXNativeTarget "OSMemoryManagementTests" */ = {
 			isa = XCConfigurationList;
@@ -477,6 +478,7 @@
 				13367DA6183A389900E466AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

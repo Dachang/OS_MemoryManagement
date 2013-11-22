@@ -9,7 +9,9 @@
 #import "LDCViewController.h"
 
 @interface LDCViewController ()
-
+{
+    int _memoryPageAgeCount[4];
+}
 @end
 
 @implementation LDCViewController
@@ -27,6 +29,11 @@
     _process.oldestPage = 0;
     _process.totalNumOfInstruct = 320;
     
+    for (int i = 0; i < 4; i++)
+    {
+        _memoryPageAgeCount[i] = 0;
+    }
+    
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         [self createInstructList];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -40,12 +47,16 @@
 - (void)createInstructList
 {
     int tempNumber;
+    int tempNext;
     NSString *tempString;
+    NSString *tempStringNext;
     BOOL isEqualOrNot;
     
     do{
         tempNumber = (arc4random() % (_process.totalNumOfInstruct));
+        tempNext = tempNumber + 1;
         tempString = [NSString stringWithFormat:@"%i", tempNumber];
+        tempStringNext = [NSString stringWithFormat:@"%i",tempNext];
         isEqualOrNot = YES;
         
         for (_process.countNum = 0; _process.countNum < [_process.instructList count]; _process.countNum++)
@@ -59,6 +70,7 @@
         if (isEqualOrNot == YES)
         {
             [_process.instructList addObject:tempString];
+            [_process.instructList addObject:tempStringNext];
         }
     } while ([_process.instructList count] < _process.totalNumOfInstruct);
 }
@@ -97,6 +109,7 @@
     if ([_process.memoryList count] == 0)
     {
         [_process.memoryList addObject:[NSString stringWithFormat:@"%i", _process.pageNumber]];
+        _memoryPageAgeCount[0] = 0;
         NSString *tempStringOne = [_process.resultDataSource objectAtIndex:[_process.resultDataSource count] - 1];
         [_process.resultDataSource replaceObjectAtIndex:[_process.resultDataSource count] - 1 withObject:[tempStringOne stringByAppendingString:@"   缺页"]];
     }
@@ -107,12 +120,26 @@
         {
             if (_process.pageNumber == [[_process.memoryList objectAtIndex:i] intValue])
             {
+                _memoryPageAgeCount[i] = 0;
+                for (int j=0; j<i;j++)
+                {
+                    _memoryPageAgeCount[j]++;
+                }
+                for (int k=i+1; k<[_process.memoryList count]; k++)
+                {
+                    _memoryPageAgeCount[k]++;
+                }
                 add = NO;
             }
         }
         if (add == YES)
         {
             [_process.memoryList addObject:[NSString stringWithFormat:@"%i", _process.pageNumber]];
+            _memoryPageAgeCount[[_process.memoryList count] - 1] = 0;
+            for (int i=0; i<[_process.memoryList count]-1; i++)
+            {
+                _memoryPageAgeCount[i]++;
+            }
             NSString *tempStringTwo = [_process.resultDataSource objectAtIndex:[_process.resultDataSource count] - 1];
             [_process.resultDataSource replaceObjectAtIndex:[_process.resultDataSource count] - 1 withObject:[tempStringTwo stringByAppendingString:@"   缺页"]];
         }
@@ -121,19 +148,66 @@
     {
         if ([_process.pageString isEqualToString:[_process.memoryList objectAtIndex:0]] || [_process.pageString isEqualToString:[_process.memoryList objectAtIndex:1]] || [_process.pageString isEqualToString:[_process.memoryList objectAtIndex:2]] || [_process.pageString isEqualToString:[_process.memoryList objectAtIndex:3]])
         {
-            //没有缺页
+            if ([_process.pageString isEqualToString:[_process.memoryList objectAtIndex:0]])
+            {
+                _memoryPageAgeCount[0] = 0;
+                _memoryPageAgeCount[1]++;
+                _memoryPageAgeCount[2]++;
+                _memoryPageAgeCount[3]++;
+            }
+            if ([_process.pageString isEqualToString:[_process.memoryList objectAtIndex:1]])
+            {
+                _memoryPageAgeCount[1] = 0;
+                _memoryPageAgeCount[0]++;
+                _memoryPageAgeCount[2]++;
+                _memoryPageAgeCount[3]++;
+            }
+            if ([_process.pageString isEqualToString:[_process.memoryList objectAtIndex:2]])
+            {
+                _memoryPageAgeCount[2] = 0;
+                _memoryPageAgeCount[0]++;
+                _memoryPageAgeCount[1]++;
+                _memoryPageAgeCount[3]++;
+            }
+            if ([_process.pageString isEqualToString:[_process.memoryList objectAtIndex:3]])
+            {
+                _memoryPageAgeCount[3] = 0;
+                _memoryPageAgeCount[0]++;
+                _memoryPageAgeCount[1]++;
+                _memoryPageAgeCount[2]++;
+            }
         }
         else
         {
-            [_process.memoryList replaceObjectAtIndex:_process.oldestPage withObject:_process.pageString];
-            if (_process.oldestPage == 3)
+            int maxNum = _memoryPageAgeCount[0];
+            int maxIndex = 0;
+            for (int i = 0; i < 4; i++)
             {
-                _process.oldestPage = 0;
+                if (_memoryPageAgeCount[i]>maxNum)
+                {
+                    maxNum = _memoryPageAgeCount[i];
+                    maxIndex = i;
+                    NSLog(@"%d",maxIndex);
+                }
             }
-            else if (_process.oldestPage < 3)
+            [_process.memoryList replaceObjectAtIndex:maxIndex withObject:_process.pageString];
+            _memoryPageAgeCount[maxIndex] = 0;
+            for (int j=0; j<maxIndex;j++)
             {
-                _process.oldestPage++;
+                _memoryPageAgeCount[j]++;
             }
+            for (int k=maxIndex+1; k<[_process.memoryList count]; k++)
+            {
+                _memoryPageAgeCount[k]++;
+            }
+//            if (_process.oldestPage == 3)
+//            {
+//                _process.oldestPage = 0;
+//            }
+//            else if (_process.oldestPage < 3)
+//            {
+//                _process.oldestPage++;
+//            }
             NSString *tempStringThree = [_process.resultDataSource objectAtIndex:[_process.resultDataSource count] - 1];
             [_process.resultDataSource replaceObjectAtIndex:[_process.resultDataSource count] - 1 withObject:[tempStringThree stringByAppendingString:@"   缺页"]];
             _process.lackCount++;
@@ -248,7 +322,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     NSString *text;
-    text = [[NSString stringWithFormat:@"%i",indexPath.row+1] stringByAppendingString:[_process.resultDataSource objectAtIndex:indexPath.row]];
+    text = [[NSString stringWithFormat:@"%i     ",indexPath.row+1] stringByAppendingString:[_process.resultDataSource objectAtIndex:indexPath.row]];
     cell.textLabel.text = text;
     return cell;
 }

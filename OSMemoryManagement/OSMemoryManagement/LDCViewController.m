@@ -20,14 +20,8 @@
 {
     [super viewDidLoad];
     _process = [[LDCProcessModel alloc] init];
-    _process.instructList = [[NSMutableArray alloc] initWithObjects:nil];
-    _process.resultDataSource = [[NSMutableArray alloc] initWithObjects:nil];
-    _process.memoryList = [[NSMutableArray alloc] initWithObjects:nil];
-    
-    _process.lackCount = 0;
-    _process.runningTime = 0.1f;
-    _process.oldestPage = 0;
-    _process.totalNumOfInstruct = 320;
+    [_process initProcessModel];
+    [self initUI];
     
     for (int i = 0; i < 4; i++)
     {
@@ -40,6 +34,15 @@
             _process.runTimer = [NSTimer scheduledTimerWithTimeInterval:_process.runningTime target:self selector:@selector(showInstruct) userInfo:nil repeats:YES];
         });
     });
+}
+
+#pragma mark - UI init
+- (void)initUI
+{
+    UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"memory_UI_BG"]];
+    bgImage.frame = CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width);
+    [self.view addSubview:bgImage];
+    [self.view sendSubviewToBack:bgImage];
 }
 
 #pragma mark - create instruct list
@@ -69,8 +72,16 @@
         }
         if (isEqualOrNot == YES)
         {
-            [_process.instructList addObject:tempString];
-            [_process.instructList addObject:tempStringNext];
+            int randomTemp  = arc4random()%3;
+            if (randomTemp == 0 || randomTemp == 1)
+            {
+                [_process.instructList addObject:tempString];
+            }
+            else
+            {
+                [_process.instructList addObject:tempString];
+                [_process.instructList addObject:tempStringNext];
+            }
         }
     } while ([_process.instructList count] < _process.totalNumOfInstruct);
 }
@@ -93,7 +104,10 @@
     {
         _instructLabel.text = @"本次运行结束";
         _lackPageLabel.text = [NSString stringWithFormat:@"缺页率:%i/%i",_process.lackCount,_process.totalNumOfInstruct];
-        _result = [[UITableView alloc] initWithFrame:CGRectMake(20, 377, 429, 348) style:UITableViewStylePlain];
+        _result = [[UITableView alloc] initWithFrame:CGRectMake(30, 410, 510, 348) style:UITableViewStylePlain];
+        _result.backgroundView = nil;
+        _result.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _result.backgroundColor = [UIColor clearColor];
         _result.delegate = self;
         _result.dataSource = self;
         _result.contentSize = CGSizeMake(429, 30*320);
@@ -238,13 +252,13 @@
     [_process.instructList removeAllObjects];
     [_process.memoryList removeAllObjects];
     [_process.resultDataSource removeAllObjects];
-    _memoryLabelOne.text = @"NULL";
-    _memoryLabelTwo.text = @"NULL";
-    _memoryLabelThree.text = @"NULL";
-    _memoryLabelFour.text = @"NULL";
+    _memoryLabelOne.text = @"空";
+    _memoryLabelTwo.text = @"空";
+    _memoryLabelThree.text = @"空";
+    _memoryLabelFour.text = @"空";
     _process.oldestPage = 0;
     _process.lackCount = 0;
-    _lackPageLabel.text = @"缺页率: ";
+    _lackPageLabel.text = @"";
     [_result removeFromSuperview];
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -273,7 +287,7 @@
         default:
             break;
     }
-    _runningTimeLabel.text = [NSString stringWithFormat:@"每条指令执行时间：%0.1fs", _process.runningTime];
+    _runningTimeLabel.text = [NSString stringWithFormat:@"%0.1fs", _process.runningTime];
 }
 
 - (IBAction)changeNum:(id)sender
@@ -293,7 +307,7 @@
         default:
             break;
     }
-    _numOfInstructLabel.text = [NSString stringWithFormat:@"指令总数: %i条", _process.totalNumOfInstruct];
+    _numOfInstructLabel.text = [NSString stringWithFormat:@"%i条", _process.totalNumOfInstruct];
 }
 
 #pragma mark - Table View DataSource & Delegate
@@ -324,6 +338,9 @@
     NSString *text;
     text = [[NSString stringWithFormat:@"%i     ",indexPath.row+1] stringByAppendingString:[_process.resultDataSource objectAtIndex:indexPath.row]];
     cell.textLabel.text = text;
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.contentView.backgroundColor = [UIColor clearColor];
     return cell;
 }
 

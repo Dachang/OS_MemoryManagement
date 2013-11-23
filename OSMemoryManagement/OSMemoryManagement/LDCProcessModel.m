@@ -10,4 +10,16 @@
 
 @implementation LDCProcessModel
 
+-(void)initProcessModel
+{
+    _instructList = [[NSMutableArray alloc] initWithObjects:nil];
+    _resultDataSource = [[NSMutableArray alloc] initWithObjects:nil];
+    _memoryList = [[NSMutableArray alloc] initWithObjects:nil];
+    
+    _lackCount = 0;
+    _runningTime = 0.1f;
+    _oldestPage = 0;
+    _totalNumOfInstruct = 320;
+}
+
 @end

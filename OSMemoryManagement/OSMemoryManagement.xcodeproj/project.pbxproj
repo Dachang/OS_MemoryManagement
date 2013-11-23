@@ -22,6 +22,14 @@
 		13367D9C183A389900E466AE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 13367D9A183A389900E466AE /* InfoPlist.strings */; };
 		13367D9E183A389900E466AE /* OSMemoryManagementTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 13367D9D183A389900E466AE /* OSMemoryManagementTests.m */; };
 		13367DA9183A3D6D00E466AE /* LDCProcessModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 13367DA8183A3D6D00E466AE /* LDCProcessModel.m */; };
+		13E32A2F18405CC500AC6796 /* memory_UI_BG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13E32A2E18405CC500AC6796 /* memory_UI_BG@2x.png */; };
+		13E32A32184064CC00AC6796 /* memory_UI_restart@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13E32A31184064CC00AC6796 /* memory_UI_restart@2x.png */; };
+		13E32A391840672700AC6796 /* memory_UI_time_three@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13E32A331840672700AC6796 /* memory_UI_time_three@2x.png */; };
+		13E32A3A1840672700AC6796 /* memory_UI_memory_three@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13E32A341840672700AC6796 /* memory_UI_memory_three@2x.png */; };
+		13E32A3B1840672700AC6796 /* memory_UI_time_one@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13E32A351840672700AC6796 /* memory_UI_time_one@2x.png */; };
+		13E32A3C1840672700AC6796 /* memory_UI_time_two@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13E32A361840672700AC6796 /* memory_UI_time_two@2x.png */; };
+		13E32A3D1840672700AC6796 /* memory_UI_memory_two@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13E32A371840672700AC6796 /* memory_UI_memory_two@2x.png */; };
+		13E32A3E1840672700AC6796 /* memory_UI_memory_one@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13E32A381840672700AC6796 /* memory_UI_memory_one@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +64,14 @@
 		13367D9D183A389900E466AE /* OSMemoryManagementTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OSMemoryManagementTests.m; sourceTree = "<group>"; };
 		13367DA7183A3D6D00E466AE /* LDCProcessModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDCProcessModel.h; sourceTree = "<group>"; };
 		13367DA8183A3D6D00E466AE /* LDCProcessModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDCProcessModel.m; sourceTree = "<group>"; };
+		13E32A2E18405CC500AC6796 /* memory_UI_BG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "memory_UI_BG@2x.png"; sourceTree = "<group>"; };
+		13E32A31184064CC00AC6796 /* memory_UI_restart@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "memory_UI_restart@2x.png"; sourceTree = "<group>"; };
+		13E32A331840672700AC6796 /* memory_UI_time_three@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "memory_UI_time_three@2x.png"; sourceTree = "<group>"; };
+		13E32A341840672700AC6796 /* memory_UI_memory_three@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "memory_UI_memory_three@2x.png"; sourceTree = "<group>"; };
+		13E32A351840672700AC6796 /* memory_UI_time_one@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "memory_UI_time_one@2x.png"; sourceTree = "<group>"; };
+		13E32A361840672700AC6796 /* memory_UI_time_two@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "memory_UI_time_two@2x.png"; sourceTree = "<group>"; };
+		13E32A371840672700AC6796 /* memory_UI_memory_two@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "memory_UI_memory_two@2x.png"; sourceTree = "<group>"; };
+		13E32A381840672700AC6796 /* memory_UI_memory_one@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "memory_UI_memory_one@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +131,7 @@
 		13367D78183A389900E466AE /* OSMemoryManagement */ = {
 			isa = PBXGroup;
 			children = (
+				13E32A2D18405CB800AC6796 /* images */,
 				13367DA7183A3D6D00E466AE /* LDCProcessModel.h */,
 				13367DA8183A3D6D00E466AE /* LDCProcessModel.m */,
 				13367D87183A389900E466AE /* LDCViewController.h */,
@@ -155,6 +172,21 @@
 				13367D9A183A389900E466AE /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		13E32A2D18405CB800AC6796 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				13E32A331840672700AC6796 /* memory_UI_time_three@2x.png */,
+				13E32A341840672700AC6796 /* memory_UI_memory_three@2x.png */,
+				13E32A351840672700AC6796 /* memory_UI_time_one@2x.png */,
+				13E32A361840672700AC6796 /* memory_UI_time_two@2x.png */,
+				13E32A371840672700AC6796 /* memory_UI_memory_two@2x.png */,
+				13E32A381840672700AC6796 /* memory_UI_memory_one@2x.png */,
+				13E32A31184064CC00AC6796 /* memory_UI_restart@2x.png */,
+				13E32A2E18405CC500AC6796 /* memory_UI_BG@2x.png */,
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,8 +266,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13E32A3E1840672700AC6796 /* memory_UI_memory_one@2x.png in Resources */,
+				13E32A32184064CC00AC6796 /* memory_UI_restart@2x.png in Resources */,
+				13E32A3D1840672700AC6796 /* memory_UI_memory_two@2x.png in Resources */,
 				13367D8B183A389900E466AE /* Images.xcassets in Resources */,
+				13E32A3A1840672700AC6796 /* memory_UI_memory_three@2x.png in Resources */,
+				13E32A3B1840672700AC6796 /* memory_UI_time_one@2x.png in Resources */,
+				13E32A3C1840672700AC6796 /* memory_UI_time_two@2x.png in Resources */,
 				13367D7D183A389900E466AE /* InfoPlist.strings in Resources */,
+				13E32A391840672700AC6796 /* memory_UI_time_three@2x.png in Resources */,
+				13E32A2F18405CC500AC6796 /* memory_UI_BG@2x.png in Resources */,
 				13367D86183A389900E466AE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
